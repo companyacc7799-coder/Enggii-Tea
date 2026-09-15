@@ -1,4 +1,56 @@
 /* =====================================================
+   GOOGLE OAUTH RETURN HANDLER
+   After Google sign-in, Supabase redirects back with the
+   session in the URL hash:
+     .../#access_token=...&refresh_token=...&expires_in=...
+   The backend verifies Supabase access tokens directly
+   (see Backend/middleware/authMiddleware.js), so we store
+   the token under the same key used below. This runs on
+   every page (including the login page) before anything
+   else, and cleans the hash from the URL.
+   ===================================================== */
+
+(function handleOAuthHash() {
+  if (!window.location.hash) return;
+
+  const params = new URLSearchParams(
+    window.location.hash.replace(/^#/, "")
+  );
+
+  const accessToken = params.get("access_token");
+  const oauthError = params.get("error_description") || params.get("error");
+
+  if (accessToken) {
+    try {
+      localStorage.setItem("enggii_auth_token", accessToken);
+    } catch (err) {
+      console.error("Unable to persist Google session:", err);
+    }
+  }
+
+  if (oauthError) {
+    console.error("Google OAuth error:", oauthError);
+  }
+
+  /* Strip the hash so the token is never visible in the
+     address bar, history or shared links. */
+  history.replaceState(
+    null,
+    "",
+    window.location.pathname + window.location.search
+  );
+
+  /* If Google sent us back to the login page, the user is
+     already signed in — go to the home page instead. */
+  if (
+    accessToken &&
+    window.location.pathname.toLowerCase().endsWith("login.html")
+  ) {
+    window.location.replace("../index.html");
+  }
+})();
+
+/* =====================================================
    API CONFIGURATION
    Single place where the backend base URL, the auth
    token storage and the shared fetch() wrapper live.
