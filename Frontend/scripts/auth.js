@@ -1,4 +1,48 @@
 /* =====================================================
+   GOOGLE OAUTH RETURN HANDLER
+   After Google sign-in, Supabase redirects back with the
+   session in the URL hash:
+     .../#access_token=...&refresh_token=...&expires_in=...
+   The backend verifies Supabase access tokens directly
+   (see Backend/middleware/authMiddleware.js), so we store
+   the token under the same key used by scripts/api.js and
+   clean the URL. This runs on every page before the
+   DOMContentLoaded handlers below.
+   ===================================================== */
+
+(function handleOAuthHash() {
+  if (!window.location.hash) return;
+
+  const params = new URLSearchParams(
+    window.location.hash.replace(/^#/, "")
+  );
+
+  const accessToken = params.get("access_token");
+  const oauthError = params.get("error_description") || params.get("error");
+
+  if (accessToken) {
+    try {
+      localStorage.setItem("enggii_auth_token", accessToken);
+    } catch (err) {
+      console.error("Unable to persist Google session:", err);
+    }
+  }
+
+  if (oauthError) {
+    console.error("Google OAuth error:", oauthError);
+  }
+
+  /* Strip the hash so the token is never visible in the
+     address bar, history or shared links. */
+  history.replaceState(
+    null,
+    "",
+    window.location.pathname + window.location.search
+  );
+})();
+
+
+/* =====================================================
    NAVBAR AUTH AREA
    ===================================================== */
 

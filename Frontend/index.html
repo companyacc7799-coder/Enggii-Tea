@@ -4,6 +4,13 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Enggi Tea | Engineering Mathematics Resource Hub</title>
+<script>
+  /* Login first: visitors without a session go straight
+     to the login page instead of the home page. */
+  if (!localStorage.getItem("enggii_auth_token")) {
+    location.replace("login/login.html");
+  }
+</script>
 <link rel="stylesheet" href="styles/style.css">
 </head>
 <body>
