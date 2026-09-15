@@ -12,8 +12,10 @@
    (see its server.js: process.env.PORT || 5000).
    ===================================================== */
 
+/* Production: Render backend. Override from index.html via
+   window.API_BASE_URL (e.g. for a different environment). */
 const API_BASE_URL =
-  window.API_BASE_URL || "http://localhost:5000";
+  window.API_BASE_URL || "https://enggii-tea.onrender.com";
 
 /* localStorage keys for the session returned by
    POST /api/auth/login and POST /api/auth/register */
