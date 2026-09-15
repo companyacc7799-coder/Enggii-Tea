@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Formula Library | Enggii Tea</title>
+
+<link rel="stylesheet" href="../styles/style.css">
+</head>
+
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+
+    <a href="../index.html" class="logo">
+      ENGGII TEA
+      <small>Engineering Mathematics Resource Hub</small>
+    </a>
+
+    <button class="menu-btn" type="button" aria-label="Toggle menu">
+      ☰
+    </button>
+
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="dashboard.html">Topics</a>
+      <a href="formulas.html" class="active">Formulas</a>
+      <a href="calculators.html">Calculators</a>
+      <a href="graphs.html">Graphs</a>
+
+      <a href="about.html">About</a>
+
+      <span id="authArea"></span>
+    </nav>
+
+  </div>
+</header>
+
+
+<main class="page math-bg">
+
+  <div class="container">
+
+    <h1 class="page-title">Formula Library</h1>
+
+    <p class="page-subtitle">
+      Quick-reference formula sheets, organized by semester.
+    </p>
+
+
+    <div class="tab-row" id="formulaTabs">
+
+      <button class="tab-btn active" data-tab="1">
+        Semester 1 · Calculus
+      </button>
+
+      <button class="tab-btn" data-tab="2">
+        Semester 2 · Linear Algebra
+      </button>
+
+      <button class="tab-btn" data-tab="3">
+        Semester 3 · Discrete Math
+      </button>
+
+      <button class="tab-btn" data-tab="4">
+        Semester 4 · Statistics
+      </button>
+
+    </div>
+
+
+    <div class="tool-card" id="formulaPanel">
+
+      <p>Loading formula sheet...</p>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<footer class="footer">
+  © 2026 Enggii Tea · Engineering Mathematics Resource Hub
+</footer>
+
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/main.js"></script>
+
+
+<script>
+
+let formulaSheets = [];
+
+
+/* --------------------------------
+   LOAD FORMULA SHEETS FROM BACKEND
+--------------------------------- */
+
+async function loadFormulaSheets() {
+
+  const panel = document.getElementById("formulaPanel");
+
+  panel.innerHTML = `
+    <p>Loading formula sheets...</p>
+  `;
+
+  try {
+
+    const response = await apiFetch(
+      "/api/resources/formula-sheets"
+    );
+
+    formulaSheets = response.data || [];
+
+    if (!formulaSheets.length) {
+
+      panel.innerHTML = `
+        <p>No formula sheets available.</p>
+      `;
+
+      return;
+    }
+
+    renderFormulaSheet("1");
+
+  } catch (error) {
+
+    console.error("Formula sheet error:", error);
+
+    panel.innerHTML = `
+      <p>
+        Unable to load formula sheets.
+        Please make sure the backend is running.
+      </p>
+    `;
+
+  }
+
+}
+
+
+/* --------------------------------
+   RENDER SELECTED SEMESTER
+--------------------------------- */
+
+function renderFormulaSheet(semester) {
+
+  const panel = document.getElementById("formulaPanel");
+
+  const sheet = formulaSheets.find(
+    item => String(item.semester) === String(semester)
+  );
+
+
+  if (!sheet) {
+
+    panel.innerHTML = `
+      <p>Formula sheet not found.</p>
+    `;
+
+    return;
+  }
+
+
+  panel.innerHTML = `
+
+    <div class="formula-pdf-card">
+
+      <h2>${sheet.subject}</h2>
+
+      <p class="formula-file-name">
+        ${sheet.file_name}
+      </p>
+
+
+      <iframe
+        src="${sheet.file_url}"
+        title="${sheet.subject} Formula Sheet"
+        width="100%"
+        height="700"
+        style="
+          border: none;
+          border-radius: 12px;
+          background: white;
+        "
+      ></iframe>
+
+
+      <div style="
+        margin-top: 20px;
+        text-align: center;
+      ">
+
+        <a
+          href="${sheet.file_url}"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Open PDF in New Tab
+        </a>
+
+      </div>
+
+    </div>
+
+  `;
+
+}
+
+
+/* --------------------------------
+   SEMESTER TAB CLICK
+--------------------------------- */
+
+document
+  .querySelectorAll(".tab-btn")
+  .forEach(button => {
+
+    button.addEventListener("click", () => {
+
+      document
+        .querySelectorAll(".tab-btn")
+        .forEach(btn => {
+          btn.classList.remove("active");
+        });
+
+
+      button.classList.add("active");
+
+
+      renderFormulaSheet(
+        button.dataset.tab
+      );
+
+    });
+
+  });
+
+
+/* --------------------------------
+   START
+--------------------------------- */
+
+loadFormulaSheets();
+
+</script>
+
+</body>
+</html>

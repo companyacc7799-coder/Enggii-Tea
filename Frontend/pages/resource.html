@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Resource | Enggii Tea</title>
+<link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">ENGGII TEA<small>Engineering Mathematics Resource Hub</small></a>
+    <button class="menu-btn" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="dashboard.html">Topics</a>
+      <a href="formulas.html">Formulas</a>
+      <a href="calculators.html">Calculators</a>
+      <a href="graphs.html">Graphs</a>
+
+      <a href="about.html">About</a>
+      <span id="authArea"></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page math-bg">
+  <div class="container">
+
+    <div class="breadcrumb">
+      <a href="dashboard.html">Topics</a>
+      <span>›</span>
+
+      <span>›</span>
+      <span>Details</span>
+    </div>
+
+    <section id="resourceDetails" class="card">
+      <div id="loading" style="text-align:center; padding:40px;">Loading resource...</div>
+      <div id="errorMessage" class="alert error" style="display:none;"></div>
+      <div id="resourceContent" style="display:none;"></div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="footer">© 2026 Enggii Tea · Engineering Mathematics Resource Hub</footer>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", loadResource);
+
+function getResourceId() {
+  return new URLSearchParams(window.location.search).get("id");
+}
+
+async function loadResource() {
+  const loading = document.getElementById("loading");
+  const errorMessage = document.getElementById("errorMessage");
+  const content = document.getElementById("resourceContent");
+  const resourceId = getResourceId();
+
+  if (!resourceId) {
+    loading.style.display = "none";
+    errorMessage.style.display = "block";
+    errorMessage.textContent = "Resource ID is missing.";
+    return;
+  }
+
+  try {
+    /* GET /api/resources/:id — public */
+    const body = await apiFetch("/api/resources/" + encodeURIComponent(resourceId));
+    const data = body.data;
+
+    if (!data) throw new Error("Resource not found.");
+
+    loading.style.display = "none";
+    content.style.display = "block";
+    content.innerHTML = createResourceDetails(data);
+
+  } catch (error) {
+    console.error("Resource loading error:", error);
+    loading.style.display = "none";
+    errorMessage.style.display = "block";
+    errorMessage.textContent = error.message || "Unable to load resource.";
+  }
+}
+
+function createResourceDetails(resource) {
+  const title = escapeHTML(resource.title || "Untitled Resource");
+  const description = escapeHTML(resource.description || "No description available.");
+  const subject = escapeHTML(resource.subject || "Mathematics");
+  const unit = escapeHTML(resource.unit || "");
+  const type = escapeHTML(resource.resource_type || "Resource");
+
+  let action = "";
+  if (resource.youtube_url) {
+    action = `<a href="${escapeAttribute(resource.youtube_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Watch / Open Video →</a>`;
+  } else if (resource.file_url) {
+    action = `<a href="${escapeAttribute(resource.file_url)}" target="_blank" rel="noopener noreferrer" class="btn btn-primary">Open File →</a>`;
+  }
+
+  return `
+    <span class="resource-type">${type}</span>
+    <h1 class="page-title">${title}</h1>
+    <p class="page-subtitle">${subject}${unit ? " · Unit " + unit : ""}</p>
+    <hr style="margin:25px 0; border:none; border-top:1px solid var(--color-border);">
+    <h2 class="section-title">Description</h2>
+    <p>${description}</p>
+    ${action
+      ? `<div style="margin-top:30px;">${action}</div>`
+      : `<div class="alert" style="margin-top:30px;">No external file or video link is available for this resource.</div>`}
+  `;
+}
+
+function escapeHTML(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+function escapeAttribute(value) { return escapeHTML(value); }
+</script>
+
+</body>
+</html>

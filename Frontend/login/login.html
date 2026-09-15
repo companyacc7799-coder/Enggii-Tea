@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ENGGI TEA - Login</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="page">
+        <section class="welcome-section">
+            <div class="math-symbol symbol-1">∫</div>
+            <div class="math-symbol symbol-2">π</div>
+            <div class="math-symbol symbol-3">Σ</div>
+            <div class="math-symbol symbol-4">√</div>
+            <div class="math-symbol symbol-5">x²</div>
+            <div class="math-symbol symbol-6">∞</div>
+
+            <div class="welcome-content">
+                <div class="brand">
+                    <div class="brand-icon">🎓</div>
+                    <h1>ENGGI <span>TEA</span></h1>
+                </div>
+                <h2>Your Engineering<br>Learning Hub</h2>
+                <p>Learn • Revise • Practice</p>
+                <div class="small-line"></div>
+                <span class="welcome-text">Engineering resources made simple.</span>
+            </div>
+        </section>
+
+        <section class="login-section">
+            <div class="login-card">
+                <div class="mobile-logo">
+                    <div class="mobile-logo-icon">🎓</div>
+                    <h2>ENGGI <span>TEA</span></h2>
+                </div>
+
+                <div class="login-heading">
+                    <h1 id="authHeading">Welcome To Enggi Tea!</h1>
+                    <p id="authSubheading">Login to continue your learning journey</p>
+                </div>
+
+                <form id="loginForm">
+                    <div class="input-group">
+                        <label for="email">Email Address</label>
+                        <div class="input-box">
+                            <span class="input-icon">✉</span>
+                            <input type="email" id="email" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="password">Password</label>
+                        <div class="input-box">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="password" placeholder="Enter your password" required>
+                            <button type="button" class="show-password" id="togglePassword">👁</button>
+                        </div>
+                    </div>
+
+                    <div class="login-options">
+                        <label class="remember">
+                            <input type="checkbox">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="#" id="forgotPassword">Forgot Password?</a>
+                    </div>
+
+                    <button type="submit" class="login-btn">
+                        Login <span>→</span>
+                    </button>
+                </form>
+
+                <!-- Register form (toggled by the "Create Account" link below) -->
+                <form id="registerForm" style="display:none;">
+                    <div class="input-group">
+                        <label for="regName">Full Name</label>
+                        <div class="input-box">
+                            <span class="input-icon">👤</span>
+                            <input type="text" id="regName" placeholder="Enter your name" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="regEmail">Email Address</label>
+                        <div class="input-box">
+                            <span class="input-icon">✉</span>
+                            <input type="email" id="regEmail" placeholder="Enter your email" required>
+                        </div>
+                    </div>
+
+                    <div class="input-group">
+                        <label for="regPassword">Password</label>
+                        <div class="input-box">
+                            <span class="input-icon">🔒</span>
+                            <input type="password" id="regPassword" placeholder="Create a password (min 6 characters)" required>
+                            <button type="button" class="show-password" id="toggleRegPassword">👁</button>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="login-btn" id="registerBtn">
+                        Create Account <span>→</span>
+                    </button>
+                </form>
+
+                <div class="divider" id="loginDivider"><span>OR</span></div>
+
+                <button class="google-btn" type="button" id="googleLogin">
+                    <span class="google-icon">G</span>
+                    Continue with Google
+                </button>
+
+                <div class="signup-text">
+                    <span id="signupText">Don't have an account?</span>
+                    <a href="#" id="signupLink">Create Account</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="../scripts/api.js"></script>
+<script src="script.js"></script>
+</body>
+</html>

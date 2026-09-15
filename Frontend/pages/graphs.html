@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Graph Visualizer | Enggii Tea</title>
+<link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">ENGGII TEA<small>Engineering Mathematics Resource Hub</small></a>
+    <button class="menu-btn" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="dashboard.html">Topics</a>
+      <a href="formulas.html">Formulas</a>
+      <a href="calculators.html">Calculators</a>
+      <a href="graphs.html" class="active">Graphs</a>
+
+      <a href="about.html">About</a>
+      <span id="authArea"></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page math-bg">
+  <div class="container">
+    <h1 class="page-title">Graph Visualizer</h1>
+    <p class="page-subtitle">Plot a function of x and see how it behaves across a range.</p>
+
+    <div class="tool-card">
+      <div class="grid grid-4" style="align-items:end; margin-bottom:20px;">
+        <div class="form-group" style="grid-column: span 2; margin-bottom:0;">
+          <label for="fnInput">f(x) =</label>
+          <input type="text" id="fnInput" class="form-control" value="sin(x) * x">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="xMin">x min</label>
+          <input type="number" id="xMin" class="form-control" value="-10">
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label for="xMax">x max</label>
+          <input type="number" id="xMax" class="form-control" value="10">
+        </div>
+      </div>
+      <button class="btn btn-primary" id="plotBtn">Plot Function</button>
+      <p style="font-size:13px; margin-top:10px;">
+        Supported: + − * / ^, sin, cos, tan, sqrt, log, abs, pi, e — e.g. <code>x^2 - 3*x + 2</code>
+      </p>
+      <div id="graphError" class="alert error" style="display:none; margin-top:14px;"></div>
+      <canvas id="graphCanvas" width="900" height="420" style="margin-top:18px;"></canvas>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 Enggii Tea · Engineering Mathematics Resource Hub</footer>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/main.js"></script>
+<script src="../scripts/graphs.js"></script>
+
+</body>
+</html>

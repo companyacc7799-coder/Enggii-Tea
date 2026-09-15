@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculators | Enggii Tea</title>
+<link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">ENGGII TEA<small>Engineering Mathematics Resource Hub</small></a>
+    <button class="menu-btn" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="dashboard.html">Topics</a>
+      <a href="formulas.html">Formulas</a>
+      <a href="calculators.html" class="active">Calculators</a>
+      <a href="graphs.html">Graphs</a>
+
+      <a href="about.html">About</a>
+      <span id="authArea"></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page math-bg">
+  <div class="container">
+    <h1 class="page-title">Calculators</h1>
+    <p class="page-subtitle">Quick tools for the equations you'll hit again and again.</p>
+
+    <div class="tab-row" id="calcTabs">
+      <button class="tab-btn active" data-tab="quadratic">Quadratic Solver</button>
+      <button class="tab-btn" data-tab="matrix">Matrix Determinant</button>
+      <button class="tab-btn" data-tab="stats">Mean &amp; Std Dev</button>
+    </div>
+
+    <!-- QUADRATIC -->
+    <div class="tool-card calc-panel" data-panel="quadratic">
+      <h2 class="section-title">Quadratic Equation — ax² + bx + c = 0</h2>
+      <div class="grid grid-3">
+        <div class="form-group"><label>a</label><input type="number" id="qa" class="form-control" value="1"></div>
+        <div class="form-group"><label>b</label><input type="number" id="qb" class="form-control" value="-3"></div>
+        <div class="form-group"><label>c</label><input type="number" id="qc" class="form-control" value="2"></div>
+      </div>
+      <button class="btn btn-primary" onclick="solveQuadratic()">Solve</button>
+      <div class="result-box" id="quadraticResult"></div>
+    </div>
+
+    <!-- MATRIX -->
+    <div class="tool-card calc-panel" data-panel="matrix" style="display:none;">
+      <h2 class="section-title">Matrix Determinant</h2>
+      <div class="form-group">
+        <label for="matrixSize">Size</label>
+        <select id="matrixSize" class="form-control" onchange="buildMatrixInputs()">
+          <option value="2">2 × 2</option>
+          <option value="3">3 × 3</option>
+        </select>
+      </div>
+      <div id="matrixGrid" style="display:grid; grid-template-columns:repeat(2, 90px); gap:10px; margin-bottom:18px;"></div>
+      <button class="btn btn-primary" onclick="solveDeterminant()">Calculate Determinant</button>
+      <div class="result-box" id="matrixResult"></div>
+    </div>
+
+    <!-- STATS -->
+    <div class="tool-card calc-panel" data-panel="stats" style="display:none;">
+      <h2 class="section-title">Mean, Variance &amp; Standard Deviation</h2>
+      <div class="form-group">
+        <label for="statData">Data (comma separated)</label>
+        <input type="text" id="statData" class="form-control" value="4, 8, 15, 16, 23, 42">
+      </div>
+      <button class="btn btn-primary" onclick="solveStats()">Calculate</button>
+      <div class="result-box" id="statsResult"></div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="footer">© 2026 Enggii Tea · Engineering Mathematics Resource Hub</footer>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/main.js"></script>
+<script src="../scripts/calculators.js"></script>
+
+</body>
+</html>

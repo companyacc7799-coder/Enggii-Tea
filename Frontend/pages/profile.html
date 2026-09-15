@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Profile | Enggii Tea</title>
+<link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">ENGGII TEA<small>Engineering Mathematics Resource Hub</small></a>
+    <button class="menu-btn" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="dashboard.html">Topics</a>
+      <a href="formulas.html">Formulas</a>
+      <a href="calculators.html">Calculators</a>
+      <a href="graphs.html">Graphs</a>
+
+      <a href="about.html">About</a>
+      <span id="authArea"></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page math-bg">
+  <div class="container">
+    <h1 class="page-title">My Profile</h1>
+    <p class="page-subtitle">View your Enggii Tea account information.</p>
+
+    <section class="card">
+      <div class="profile-header">
+        <div class="avatar" id="avatar">U</div>
+        <div class="profile-info">
+          <h2 id="profileName">Loading...</h2>
+          <p id="profileEmail">Loading...</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="grid grid-2">
+        <div class="subject-card"><h3>Name</h3><p id="nameValue">—</p></div>
+        <div class="subject-card"><h3>Email</h3><p id="emailValue">—</p></div>
+        <div class="subject-card"><h3>Account Type</h3><p id="roleValue">Student</p></div>
+        <div class="subject-card"><h3>Account Status</h3><p>Active</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <button class="btn btn-danger" id="logoutProfile" type="button">Logout</button>
+    </section>
+  </div>
+</main>
+
+<footer class="footer">© 2026 Enggii Tea · Engineering Mathematics Resource Hub</footer>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/main.js"></script>
+
+<script>
+document.addEventListener("DOMContentLoaded", loadProfile);
+
+async function loadProfile() {
+  try {
+    /* GET /api/auth/me via scripts/api.js — the backend profile
+       ({ id, name, email, role, created_at }) is the source of
+       truth. Redirects to the login page when not signed in. */
+    const user = await requireAuth();
+    if (!user) return;
+
+    const email = user.email || "—";
+    const name = user.name || (email === "—" ? "Student" : email.split("@")[0]);
+    const role = user.role || "student";
+
+    document.getElementById("profileName").textContent = name;
+    document.getElementById("profileEmail").textContent = email;
+    document.getElementById("nameValue").textContent = name;
+    document.getElementById("emailValue").textContent = email;
+    document.getElementById("roleValue").textContent = role.charAt(0).toUpperCase() + role.slice(1);
+    document.getElementById("avatar").textContent = name.charAt(0).toUpperCase();
+
+    document.getElementById("logoutProfile").addEventListener("click", requestLogout);
+
+  } catch (error) {
+    console.error("Profile loading error:", error);
+  }
+}
+</script>
+
+</body>
+</html>

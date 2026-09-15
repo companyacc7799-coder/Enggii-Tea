@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Topics | Enggii Tea</title>
+<link rel="stylesheet" href="../styles/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="../index.html" class="logo">ENGGII TEA<small>Engineering Mathematics Resource Hub</small></a>
+    <button class="menu-btn" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="../index.html">Home</a>
+      <a href="dashboard.html" class="active">Topics</a>
+      <a href="formulas.html">Formulas</a>
+      <a href="calculators.html">Calculators</a>
+      <a href="graphs.html">Graphs</a>
+
+      <a href="about.html">About</a>
+      <span id="authArea"></span>
+    </nav>
+  </div>
+</header>
+
+<main class="page math-bg">
+  <div class="container">
+    <h1 class="page-title">Explore by Semester</h1>
+    <p class="page-subtitle">Pick a semester to see its subject, units and approved resources.</p>
+
+    <div class="grid grid-4">
+      <a href="subject.html?semester=1" class="semester-card">
+        <h3>Semester 1</h3>
+        <p>Applied Calculus</p>
+        <span class="btn btn-primary btn-sm">Explore →</span>
+      </a>
+      <a href="subject.html?semester=2" class="semester-card">
+        <h3>Semester 2</h3>
+        <p>Linear Algebra</p>
+        <span class="btn btn-primary btn-sm">Explore →</span>
+      </a>
+      <a href="subject.html?semester=3" class="semester-card">
+        <h3>Semester 3</h3>
+        <p>Discrete Mathematics</p>
+        <span class="btn btn-primary btn-sm">Explore →</span>
+      </a>
+      <a href="subject.html?semester=4" class="semester-card">
+        <h3>Semester 4</h3>
+        <p>Probability &amp; Statistics</p>
+        <span class="btn btn-primary btn-sm">Explore →</span>
+      </a>
+    </div>
+
+    <div class="section">
+      <div class="card" style="text-align:center;">
+        <h2 class="section-title">Not sure where to start?</h2>
+        <p>Browse the formula library or search all approved resources to see where you stand.</p>
+        <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+          <a href="formulas.html" class="btn btn-outline">Formula Library</a>
+          <a href="search.html" class="btn btn-primary">Browse Resources</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+
+<footer class="footer">© 2026 Enggii Tea · Engineering Mathematics Resource Hub</footer>
+
+<script src="../scripts/api.js"></script>
+<script src="../scripts/auth.js"></script>
+<script src="../scripts/main.js"></script>
+
+</body>
+</html>

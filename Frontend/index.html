@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enggi Tea | Engineering Mathematics Resource Hub</title>
+<link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+
+<header class="navbar">
+  <div class="nav-inner">
+    <a href="index.html" class="logo">ENGGI TEA<small>Engineering Mathematics Resource Hub</small></a>
+    <button class="menu-btn" type="button" aria-label="Toggle menu">☰</button>
+    <nav class="nav-links">
+      <a href="index.html" class="active">Home</a>
+      <a href="pages/dashboard.html">Topics</a>
+      <a href="pages/formulas.html">Formulas</a>
+      <a href="pages/calculators.html">Calculators</a>
+      <a href="pages/graphs.html">Graphs</a>
+      <a href="pages/about.html">About</a>
+      <span id="authArea"></span>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero math-bg">
+    <div class="hero-card">
+      <h1 class="hero-title">ENGGI TEA</h1>
+      <h2 class="hero-subtitle">Your Engineering Mathematics Resource Hub</h2>
+      <p class="hero-text">
+        Learn, revise and practice Engineering Mathematics through organized
+        videos, formula sheets, interactive calculators and question papers —
+        all in one place.
+      </p>
+      <p class="hero-tagline">
+        <span>Learn</span><span class="dot">•</span><span>Revise</span><span class="dot">•</span><span>Practice</span>
+      </p>
+      <a href="pages/dashboard.html" class="btn btn-accent">Explore Resources →</a>
+    </div>
+
+    <div class="semester-pill-panel">
+      <h3>Explore by Semester</h3>
+      <a href="pages/subject.html?semester=1" class="semester-pill">Semester 1 <span>➜</span></a>
+      <a href="pages/subject.html?semester=2" class="semester-pill">Semester 2 <span>➜</span></a>
+      <a href="pages/subject.html?semester=3" class="semester-pill">Semester 3 <span>➜</span></a>
+      <a href="pages/subject.html?semester=4" class="semester-pill">Semester 4 <span>➜</span></a>
+    </div>
+  </section>
+
+  <section class="page">
+    <div class="container">
+      <h2 class="page-title">Everything you need, one subject at a time</h2>
+      <p class="page-subtitle">Four core tools to help every problem set feel a little less intimidating.</p>
+
+      <div class="grid grid-4">
+        <a href="pages/formulas.html" class="semester-card">
+          <h3>Formula Library</h3>
+          <p>Quick-reference sheets for calculus, algebra, discrete math and statistics.</p>
+          <span class="btn btn-primary btn-sm">Browse →</span>
+        </a>
+        <a href="pages/calculators.html" class="semester-card">
+          <h3>Calculators</h3>
+          <p>Solve quadratics, matrices, derivatives and statistics instantly.</p>
+          <span class="btn btn-primary btn-sm">Open →</span>
+        </a>
+        <a href="pages/graphs.html" class="semester-card">
+          <h3>Graph Visualizer</h3>
+          <p>Plot any function and see how it behaves in real time.</p>
+          <span class="btn btn-primary btn-sm visualize-btn">Visualize →</span>
+        </a>
+       
+      </div>
+    </div>
+  </section>
+
+  <section class="page math-bg" style="padding-top:0;">
+    <div class="container">
+      <div class="card" style="text-align:center;">
+        <h2 class="section-title">Have notes or a question paper worth sharing?</h2>
+        <p>Upload it once — approved resources help every student in your semester.</p>
+        <a href="pages/upload.html" class="btn btn-primary">Upload a Resource</a>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  © 2026 Enggi Tea · Engineering Mathematics Resource Hub · <a href="pages/contact.html">Contact</a>
+</footer>
+
+<script src="scripts/api.js"></script>
+<script src="scripts/auth.js"></script>
+<script src="scripts/main.js"></script>
+
+
+</body>
+
+</html>
