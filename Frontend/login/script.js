@@ -396,12 +396,12 @@ if (googleLogin) {
                   ↓
           Google Login
                   ↓
-          /Frontend/pages/dashboard.html
+          /Frontend/index.html (home, already signed in)
         */
 
         const redirectUrl =
           new URL(
-            "../pages/dashboard.html",
+            "../index.html",
             window.location.href
           ).href;
 

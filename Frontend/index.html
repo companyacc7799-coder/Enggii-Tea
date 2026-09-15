@@ -6,8 +6,14 @@
 <title>Enggi Tea | Engineering Mathematics Resource Hub</title>
 <script>
   /* Login first: visitors without a session go straight
-     to the login page instead of the home page. */
-  if (!localStorage.getItem("enggii_auth_token")) {
+     to the login page instead of the home page. Skip the
+     guard when returning from Google OAuth — the session
+     token arrives in the URL hash and scripts/api.js saves
+     it right after this runs. */
+  if (
+    !localStorage.getItem("enggii_auth_token") &&
+    !window.location.hash.includes("access_token")
+  ) {
     location.replace("login/login.html");
   }
 </script>
