@@ -23,6 +23,13 @@
   if (accessToken) {
     try {
       localStorage.setItem("enggii_auth_token", accessToken);
+
+      /* The refresh token lets us silently get a new access
+         token when this one expires (~1 hour). */
+      const refreshToken = params.get("refresh_token");
+      if (refreshToken) {
+        localStorage.setItem("enggii_auth_refresh", refreshToken);
+      }
     } catch (err) {
       console.error("Unable to persist Google session:", err);
     }
@@ -73,6 +80,13 @@ const API_BASE_URL =
    POST /api/auth/login and POST /api/auth/register */
 const TOKEN_KEY = "enggii_auth_token";
 const USER_KEY = "enggii_auth_user";
+const REFRESH_KEY = "enggii_auth_refresh";
+
+/* Supabase auth endpoint — used ONLY to exchange the stored
+   refresh token for a fresh access token when it expires. */
+const SUPABASE_AUTH_URL = "https://oeczqbbdjifhyobhhcys.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY =
+  "sb_publishable_7Mt2qUoOUlgNnHwWN6OUDw__Q9i1DrJ";
 
 /* Error type with an HTTP status, so pages can tell
    "bad credentials" (401) apart from "server down" (0). */
@@ -102,6 +116,9 @@ function saveSession(session, user) {
     if (session && session.access_token) {
       localStorage.setItem(TOKEN_KEY, session.access_token);
     }
+    if (session && session.refresh_token) {
+      localStorage.setItem(REFRESH_KEY, session.refresh_token);
+    }
     if (user) {
       localStorage.setItem(USER_KEY, JSON.stringify(user));
     }
@@ -130,7 +147,61 @@ function clearSession() {
   try {
     localStorage.removeItem(TOKEN_KEY);
     localStorage.removeItem(USER_KEY);
+    localStorage.removeItem(REFRESH_KEY);
   } catch { /* storage unavailable — nothing to clear */ }
+}
+
+/* ---------- Silent token refresh ---------- */
+
+/* Access tokens live only about one hour. When one expires,
+   the stored refresh token is exchanged for a fresh pair via
+   Supabase's token endpoint, so the user stays logged in.
+   The publishable key is public by design (the same value is
+   used in login/script.js). Concurrent 401s share a single
+   in-flight refresh request. */
+
+let refreshInFlight = null;
+
+function refreshAccessToken() {
+  let refreshToken = null;
+  try {
+    refreshToken = localStorage.getItem(REFRESH_KEY);
+  } catch { /* storage unavailable */ }
+
+  if (!refreshToken) return Promise.resolve(false);
+
+  if (!refreshInFlight) {
+    refreshInFlight = fetch(
+      SUPABASE_AUTH_URL + "/auth/v1/token?grant_type=refresh_token",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          apikey: SUPABASE_PUBLISHABLE_KEY,
+          Authorization: "Bearer " + SUPABASE_PUBLISHABLE_KEY,
+        },
+        body: JSON.stringify({ refresh_token: refreshToken }),
+      }
+    )
+      .then(async (res) => {
+        if (!res.ok) return false;
+        const data = await res.json().catch(() => null);
+        if (!data || !data.access_token) return false;
+        try {
+          localStorage.setItem(TOKEN_KEY, data.access_token);
+          if (data.refresh_token) {
+            localStorage.setItem(REFRESH_KEY, data.refresh_token);
+          }
+        } catch { /* storage unavailable */ }
+        return true;
+      })
+      .catch(() => false)
+      .finally(() => {
+        refreshInFlight = null;
+      });
+  }
+
+  return refreshInFlight;
 }
 
 /* ---------- Shared fetch wrapper ---------- */
@@ -164,9 +235,18 @@ async function apiFetch(path, options = {}) {
   }
 
   if (!response.ok) {
-    /* A 401 on a request we authenticated means the stored
-       token is invalid or expired — drop the local session. */
-    if (response.status === 401 && token) {
+    /* A 401 on a request we authenticated usually means the
+       access token expired. Try ONE silent refresh with the
+       stored refresh token and retry the request once; only
+       when that fails too do we drop the local session. */
+    if (response.status === 401 && token && !options._authRetried) {
+      const refreshed = await refreshAccessToken();
+      if (refreshed) {
+        return apiFetch(
+          path,
+          Object.assign({}, options, { _authRetried: true })
+        );
+      }
       clearSession();
     }
     throw new ApiError(
